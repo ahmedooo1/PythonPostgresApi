@@ -1,0 +1,44 @@
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi> gunicorn --bind 0.0.0.0:5000 --reuse-port --reload main:app
+gunicorn: The term 'gunicorn' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi> gunicorn --bind 0.0.0.0:5000 --reuse-port --reload main:app
+gunicorn: The term 'gunicorn' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi> Start All Services
+Start-Process: This command cannot be run due to the error: An error occurred trying to start process 'All' with working directory 'C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi'. Le fichier spécifié est introuvable.
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi> docker-compose up --build
+>>
+time="2025-04-01T03:42:57+02:00" level=warning msg="C:\\Users\\aa545\\Downloads\\PythonPostgresApi (1)\\PythonPostgresApi\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+unable to get image 'pythonpostgresapi-child_assistance_service': error during connect: Get "http://%2F%2F.%2Fpipe%2FdockerDesktopLinuxEngine/v1.47/images/pythonpostgresapi-child_assistance_service/json": open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi> Start All Services
+Start-Process: This command cannot be run due to the error: An error occurred trying to start process 'All' with working directory 'C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi'. Le fichier spécifié est introuvable.
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi> cd gateway
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi\gateway> uvicorn main:app --host 0.0.0.0 --port 5000
+uvicorn: The term 'uvicorn' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi\gateway> cd ../
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi> cd user_service
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi\user_service> uvicorn main:app --host 0.0.0.0 --port 8000
+uvicorn: The term 'uvicorn' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi\user_service> pip install uvicorn 
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: uvicorn in c:\users\aa545\appdata\roaming\python\python312\site-packages (0.24.0)
+Requirement already satisfied: click>=7.0 in c:\users\aa545\appdata\roaming\python\python312\site-packages (from uvicorn) (8.1.8)
+Requirement already satisfied: h11>=0.8 in c:\users\aa545\appdata\roaming\python\python312\site-packages (from uvicorn) (0.14.0)   
+Requirement already satisfied: colorama in c:\users\aa545\appdata\roaming\python\python312\site-packages (from click>=7.0->uvicorn) (0.4.6)
+
+[notice] A new release of pip is available: 25.0 -> 25.0.1
+[notice] To update, run: python.exe -m pip install --upgrade pip
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi\user_service> uvicorn --version
+uvicorn: The term 'uvicorn' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi\user_service> uvicorn main:app --host 0.0.0.0 --port 8000
+uvicorn: The term 'uvicorn' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi\user_service> python -m site --user-base
+C:\Users\aa545\AppData\Roaming\Python
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi\user_service> docker-compose up --build
+time="2025-04-01T03:47:53+02:00" level=warning msg="C:\\Users\\aa545\\Downloads\\PythonPostgresApi (1)\\PythonPostgresApi\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+unable to get image 'pythonpostgresapi-provider_service': error during connect: Get "http://%2F%2F.%2Fpipe%2FdockerDesktopLinuxEngine/v1.47/images/pythonpostgresapi-provider_service/json": open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.
+PS C:\Users\aa545\Downloads\PythonPostgresApi (1)\PythonPostgresApi\user_service> 

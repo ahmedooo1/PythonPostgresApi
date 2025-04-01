@@ -12,7 +12,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from shared.exceptions import NotFoundException, BadRequestException
 
-from .database import engine, get_db, Base
+from database import engine, get_db, Base
 from .models import Order, ServiceType, OrderStatus
 from .schemas import OrderCreate, OrderResponse, OrderUpdate
 from .config import SERVICE_HOST, SERVICE_PORT, API_PREFIX, API_VERSION, USER_SERVICE_URL, ALLOWED_ORIGINS

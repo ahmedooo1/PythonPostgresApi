@@ -14,7 +14,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from shared.exceptions import NotFoundException, BadRequestException, ConflictException
 
-from .database import engine, get_db, Base
+from database import engine, get_db, Base
 from .models import User, UserRole
 from .schemas import UserCreate, UserResponse, UserUpdate, Token, LoginRequest
 from .config import SERVICE_HOST, SERVICE_PORT, API_PREFIX, API_VERSION, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, ALLOWED_ORIGINS

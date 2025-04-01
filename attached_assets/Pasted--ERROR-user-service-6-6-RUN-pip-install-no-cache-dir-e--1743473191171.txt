@@ -1,0 +1,47 @@
+ => ERROR [user_service 6/6] RUN pip install --no-cache-dir -e .                                                              2.6s 
+------
+ > [user_service 6/6] RUN pip install --no-cache-dir -e .:
+1.441 Obtaining file:///app
+1.442   Installing build dependencies: started
+2.809   Installing build dependencies: finished with status 'done'
+2.810   Checking if build backend supports build_editable: started
+2.264   Checking if build backend supports build_editable: finished with status 'done'
+2.264   Getting requirements to build editable: started
+2.420   Getting requirements to build editable: finished with status 'error'
+2.424   error: subprocess-exited-with-error
+2.424
+2.424   × Getting requirements to build editable did not run successfully.
+2.424   │ exit code: 1
+2.424   ╰─> [14 lines of output]
+2.424       error: Multiple top-level packages discovered in a flat-layout: ['shared', 'user_service'].
+2.424
+2.424       To avoid accidental inclusion of unwanted files or directories,
+2.424       setuptools will not proceed with this build.
+2.424
+2.424       If you are trying to create a single distribution with multiple packages
+2.424       on purpose, you should not rely on automatic discovery.
+2.424       Instead, consider the following options:
+2.424
+2.424       1. set up custom discovery (`find` directive with `include` or `exclude`)
+2.424       2. use a `src-layout`
+2.424       3. explicitly set `py_modules` or `packages` with a list of names
+2.424
+2.424       To find more information, look for "package discovery" on setuptools docs.
+2.424       [end of output]
+2.424
+2.424   note: This error originates from a subprocess, and is likely not a problem with pip.
+2.425 error: subprocess-exited-with-error
+2.425
+2.425 × Getting requirements to build editable did not run successfully.
+2.425 │ exit code: 1
+2.425 ╰─> See above for output.
+2.425
+2.425 note: This error originates from a subprocess, and is likely not a problem with pip.
+2.513
+2.513 [notice] A new release of pip is available: 24.0 -> 25.0.1
+2.513 [notice] To update, run: pip install --upgrade pip
+------
+failed to solve: process "/bin/sh -c pip install --no-cache-dir -e ." did not complete successfully: exit code: 1
+
+ *  The terminal process "C:\Program Files\PowerShell\7\pwsh.exe -Command docker compose -f 'docker-compose.yml' up -d --build" terminated with exit code: 1. 
+ *  Terminal will be reused by tasks, press any key to close it. 

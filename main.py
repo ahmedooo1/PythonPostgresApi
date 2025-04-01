@@ -1,9 +1,9 @@
-from flask import Flask, request, jsonify, Response, url_for
+from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
 import os
 import logging
 import requests
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 import json
 
 # Setup logging
@@ -12,19 +12,24 @@ logger = logging.getLogger(__name__)
 
 # Initialize Flask app
 app = Flask(__name__)
-app.secret_key = os.environ.get("SESSION_SECRET", "dev_secret_key")
 
 # Allowed origins for CORS
 ALLOWED_ORIGINS = [
     "http://localhost:5000",
-    "http://localhost:8000", 
+    "http://localhost:8000",
     "http://0.0.0.0:5000",
     "http://0.0.0.0:8000",
     "*"  # For development
 ]
 
 # Add CORS middleware
-CORS(app, origins=ALLOWED_ORIGINS, supports_credentials=True)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Service URLs - using environment variables with fallback to localhost
 USER_SERVICE_URL = os.getenv("USER_SERVICE_URL", "http://localhost:8001")
@@ -57,18 +62,31 @@ def get_service_url(path: str) -> Optional[str]:
             return service_url
     return None
 
-@app.route('/')
-def root():
+@app.get("/")
+async def root():
     """Root endpoint with API information"""
-    return jsonify({
+    return {
         "message": "Service Platform API Gateway",
         "version": "1.0.0",
-        "documentation": "/api-docs",
+        "documentation": "/docs",
         "healthcheck": "/health"
-    })
+    }
 
-@app.route('/api-docs')
-def api_docs():
+from pydantic import BaseModel
+
+class ServiceInfo(BaseModel):
+    name: str
+    url: str
+    health: str
+
+class ApiDocsResponse(BaseModel):
+    api_name: str
+    version: str
+    services: List[ServiceInfo]
+    endpoints: Dict[str, str]
+
+@app.get("/api-docs", response_model=None)
+async def api_docs():
     """API Documentation"""
     services = []
     for route, url in SERVICE_ROUTES.items():
@@ -78,7 +96,7 @@ def api_docs():
             "health": f"{route}/health"
         })
     
-    return jsonify({
+    return {
         "api_name": "Service Platform API",
         "version": "1.0.0",
         "services": services,
@@ -87,114 +105,94 @@ def api_docs():
             "health": "/health",
             "api_docs": "/api-docs"
         }
-    })
+    }
 
-@app.route('/health')
-def health_check():
+@app.get("/health")
+async def health_check():
     """Check the health of all services"""
     health_statuses = {}
     service_status = "healthy"  # Default status
     
     # Check health of all services
-    for service_name, service_url in SERVICE_ROUTES.items():
-        try:
-            response = requests.get(f"{service_url}/health", timeout=2.0)
-            if response.status_code == 200:
-                health_statuses[service_name] = "healthy"
-            else:
-                health_statuses[service_name] = f"unhealthy (status: {response.status_code})"
+    async with httpx.AsyncClient() as client:
+        for service_name, service_url in SERVICE_ROUTES.items():
+            try:
+                response = await client.get(f"{service_url}/health", timeout=2.0)
+                if response.status_code == 200:
+                    health_statuses[service_name] = "healthy"
+                else:
+                    health_statuses[service_name] = f"unhealthy (status: {response.status_code})"
+                    service_status = "degraded"
+            except Exception as e:
+                health_statuses[service_name] = f"unavailable ({str(e)})"
                 service_status = "degraded"
-        except Exception as e:
-            health_statuses[service_name] = f"unavailable ({str(e)})"
-            service_status = "degraded"
     
-    return jsonify({
+    return {
         "status": service_status,
         "service": "api-gateway",
         "services": health_statuses
-    })
+    }
 
-@app.route('/<path:path>', methods=["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"])
-def proxy_endpoint(path):
+@app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"])
+async def proxy_endpoint(request: Request, path: str):
     """Generic endpoint that proxies requests to the appropriate service"""
     # Get the full path
-    full_path = request.path
+    full_path = str(request.url.path)
     
     # Determine which service to route to
     service_url = get_service_url(full_path)
     
     if not service_url:
-        return jsonify({
-            "error": "Not Found", 
-            "message": "Service not found for this path"
-        }), 404
+        raise HTTPException(
+            status_code=404,
+            detail={"error": "Not Found", "message": "Service not found for this path"}
+        )
     
-    # Forward the request to the target service
-    target_url = f"{service_url}{full_path}"
+    # Get query parameters
+    query_params = dict(request.query_params)
     
-    # Get the method, headers and query parameters
+    # Get headers, exclude the host header
+    headers = dict(request.headers)
+    headers.pop("host", None)
+    
+    # Get the request method
     method = request.method
-    headers = {key: value for key, value in request.headers if key != 'Host'}
-    params = request.args
+    
+    # Get request body if it exists
+    body = await request.body()
     
     try:
-        # Make the request to the target service
-        if method == 'GET':
-            response = requests.get(target_url, headers=headers, params=params, timeout=30.0)
-        elif method == 'POST':
-            response = requests.post(
-                target_url, 
-                headers=headers, 
-                params=params, 
-                json=request.json if request.is_json else None,
-                data=request.form if not request.is_json else None,
+        async with httpx.AsyncClient() as client:
+            # Make the request to the target service
+            response = await client.request(
+                method,
+                f"{service_url}{full_path}",
+                params=query_params,
+                headers=headers,
+                content=body,
                 timeout=30.0
-            )
-        elif method == 'PUT':
-            response = requests.put(
-                target_url, 
-                headers=headers, 
-                params=params, 
-                json=request.json if request.is_json else None,
-                data=request.form if not request.is_json else None,
-                timeout=30.0
-            )
-        elif method == 'DELETE':
-            response = requests.delete(target_url, headers=headers, params=params, timeout=30.0)
-        elif method == 'PATCH':
-            response = requests.patch(
-                target_url, 
-                headers=headers, 
-                params=params, 
-                json=request.json if request.is_json else None,
-                data=request.form if not request.is_json else None,
-                timeout=30.0
-            )
-        else:
-            # Handle other methods
-            return jsonify({
-                "error": "Method Not Allowed", 
-                "message": f"Method {method} not supported"
-            }), 405
-        
-        # Try to get JSON response, but handle non-JSON responses too
-        try:
-            response_data = response.json()
-            return jsonify(response_data), response.status_code
-        except ValueError:
-            # Return raw response for non-JSON content
-            return Response(
-                response.content, 
-                status=response.status_code, 
-                content_type=response.headers.get('Content-Type', 'text/plain')
             )
             
-    except requests.RequestException as e:
-        logger.error(f"Error proxying request to {target_url}: {str(e)}")
-        return jsonify({
-            "error": "Service Unavailable", 
-            "message": str(e)
-        }), 503
+            # Create a response with the same status code, headers, and content
+            try:
+                return JSONResponse(
+                    status_code=response.status_code,
+                    content=response.json() if response.content else {}
+                )
+            except:
+                # If not JSON, return the raw content
+                return Response(
+                    content=response.content,
+                    status_code=response.status_code,
+                    headers=dict(response.headers)
+                )
+    except httpx.RequestError as e:
+        logger.error(f"Error proxying request to {service_url}{full_path}: {str(e)}")
+        raise HTTPException(
+            status_code=503,
+            detail={"error": "Service Unavailable", "message": str(e)}
+        )
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+# Create ASGI application for Gunicorn
+# This is the entry point that Gunicorn will use
+app = app

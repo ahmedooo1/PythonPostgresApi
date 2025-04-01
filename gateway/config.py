@@ -9,15 +9,15 @@ SERVICE_PORT = int(os.getenv("GATEWAY_SERVICE_PORT", 5000))
 API_PREFIX = "/api"
 
 # Service URLs
-USER_SERVICE_URL = os.getenv("USER_SERVICE_URL", "http://user_service:8000")
-ORDER_SERVICE_URL = os.getenv("ORDER_SERVICE_URL", "http://order_service:8000")
-PAYMENT_SERVICE_URL = os.getenv("PAYMENT_SERVICE_URL", "http://payment_service:8000")
-NOTIFICATION_SERVICE_URL = os.getenv("NOTIFICATION_SERVICE_URL", "http://notification_service:8000")
-PROVIDER_SERVICE_URL = os.getenv("PROVIDER_SERVICE_URL", "http://provider_service:8000")
-REPAIR_SERVICE_URL = os.getenv("REPAIR_SERVICE_URL", "http://repair_service:8000")
-CHILD_ASSISTANCE_SERVICE_URL = os.getenv("CHILD_ASSISTANCE_SERVICE_URL", "http://child_assistance_service:8000")
-MOVING_SERVICE_URL = os.getenv("MOVING_SERVICE_URL", "http://moving_service:8000")
-CLEANING_SERVICE_URL = os.getenv("CLEANING_SERVICE_URL", "http://cleaning_service:8000")
+USER_SERVICE_URL = os.getenv("USER_SERVICE_URL", "http://0.0.0.0:8000")
+ORDER_SERVICE_URL = os.getenv("ORDER_SERVICE_URL", "http://0.0.0.0:8001")
+PAYMENT_SERVICE_URL = os.getenv("PAYMENT_SERVICE_URL", "http://0.0.0.0:8002")
+NOTIFICATION_SERVICE_URL = os.getenv("NOTIFICATION_SERVICE_URL", "http://0.0.0.0:8003")
+PROVIDER_SERVICE_URL = os.getenv("PROVIDER_SERVICE_URL", "http://0.0.0.0:8004")
+REPAIR_SERVICE_URL = os.getenv("REPAIR_SERVICE_URL", "http://0.0.0.0:8005")
+CHILD_ASSISTANCE_SERVICE_URL = os.getenv("CHILD_ASSISTANCE_SERVICE_URL", "http://0.0.0.0:8006")
+MOVING_SERVICE_URL = os.getenv("MOVING_SERVICE_URL", "http://0.0.0.0:8007")
+CLEANING_SERVICE_URL = os.getenv("CLEANING_SERVICE_URL", "http://0.0.0.0:8008")
 
 # CORS settings
 ALLOWED_ORIGINS = [

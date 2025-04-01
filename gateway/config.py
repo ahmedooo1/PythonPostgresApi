@@ -1,14 +1,11 @@
+
 import os
 
-# Service configuration
-SERVICE_NAME = "gateway"
+# Gateway Service Configuration
 SERVICE_HOST = os.getenv("GATEWAY_SERVICE_HOST", "0.0.0.0")
 SERVICE_PORT = int(os.getenv("GATEWAY_SERVICE_PORT", 5000))
 
-# API prefix
-API_PREFIX = "/api"
-
-# Service URLs
+# Microservices URLs
 USER_SERVICE_URL = os.getenv("USER_SERVICE_URL", "http://0.0.0.0:8000")
 ORDER_SERVICE_URL = os.getenv("ORDER_SERVICE_URL", "http://0.0.0.0:8001")
 PAYMENT_SERVICE_URL = os.getenv("PAYMENT_SERVICE_URL", "http://0.0.0.0:8002")
@@ -19,11 +16,20 @@ CHILD_ASSISTANCE_SERVICE_URL = os.getenv("CHILD_ASSISTANCE_SERVICE_URL", "http:/
 MOVING_SERVICE_URL = os.getenv("MOVING_SERVICE_URL", "http://0.0.0.0:8007")
 CLEANING_SERVICE_URL = os.getenv("CLEANING_SERVICE_URL", "http://0.0.0.0:8008")
 
-# CORS settings
+# API Configuration
+API_PREFIX = "/api"
+API_VERSION = "v1"
+
+# CORS Configuration
 ALLOWED_ORIGINS = [
-    "http://localhost:5000",  # Frontend
-    "http://localhost:8000",  # API Gateway
     "http://0.0.0.0:5000",
     "http://0.0.0.0:8000",
-    "*"  # For development
+    "http://0.0.0.0:8001",
+    "http://0.0.0.0:8002", 
+    "http://0.0.0.0:8003",
+    "http://0.0.0.0:8004",
+    "http://0.0.0.0:8005",
+    "http://0.0.0.0:8006",
+    "http://0.0.0.0:8007",
+    "http://0.0.0.0:8008"
 ]

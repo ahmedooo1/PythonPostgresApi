@@ -9,7 +9,7 @@ deploymentTarget = "autoscale"
 run = ["sh", "-c", "python main.py  "]
 
 [workflows]
-runButton = "Project"
+runButton = "Start All Services"
 
 [[workflows.workflow]]
 name = "Project"
@@ -34,6 +34,51 @@ task = "packager.installForAll"
 task = "shell.exec"
 args = "gunicorn --bind 0.0.0.0:5000 --reuse-port --reload main:app"
 waitForPort = 5000
+
+[[workflows.workflow]]
+name = "Start All Services"
+author = 40868364
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd user_service && uvicorn main:app --host 0.0.0.0 --port 8000 &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd order_service && uvicorn main:app --host 0.0.0.0 --port 8001 &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd payment_service && uvicorn main:app --host 0.0.0.0 --port 8002 &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd notification_service && uvicorn main:app --host 0.0.0.0 --port 8003 &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd provider_service && uvicorn main:app --host 0.0.0.0 --port 8004 &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd repair_service && uvicorn main:app --host 0.0.0.0 --port 8005 &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd child_assistance_service && uvicorn main:app --host 0.0.0.0 --port 8006 &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd moving_service && uvicorn main:app --host 0.0.0.0 --port 8007 &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd cleaning_service && uvicorn main:app --host 0.0.0.0 --port 8008 &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd gateway && uvicorn main:app --host 0.0.0.0 --port 5000"
 
 [[ports]]
 localPort = 5000

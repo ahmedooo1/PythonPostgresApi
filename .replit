@@ -42,43 +42,43 @@ mode = "parallel"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd user_service && PYTHONPATH=/home/runner/workspace uvicorn main:app --host 0.0.0.0 --port 8000 &"
+args = "cd user_service && python -m uvicorn main:app --host 0.0.0.0 --port 8000 &"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd order_service && PYTHONPATH=/home/runner/workspace uvicorn main:app --host 0.0.0.0 --port 8001 &"
+args = "cd order_service && python -m uvicorn main:app --host 0.0.0.0 --port 8001 &"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd payment_service && PYTHONPATH=/home/runner/workspace uvicorn main:app --host 0.0.0.0 --port 8002 &"
+args = "cd payment_service && python -m uvicorn main:app --host 0.0.0.0 --port 8002 &"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd notification_service && PYTHONPATH=/home/runner/workspace uvicorn main:app --host 0.0.0.0 --port 8003 &"
+args = "cd notification_service && python -m uvicorn main:app --host 0.0.0.0 --port 8003 &"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd provider_service && PYTHONPATH=/home/runner/workspace uvicorn main:app --host 0.0.0.0 --port 8004 &"
+args = "cd provider_service && python -m uvicorn main:app --host 0.0.0.0 --port 8004 &"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd repair_service && PYTHONPATH=/home/runner/workspace uvicorn main:app --host 0.0.0.0 --port 8005 &"
+args = "cd repair_service && python -m uvicorn main:app --host 0.0.0.0 --port 8005 &"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd child_assistance_service && PYTHONPATH=/home/runner/workspace uvicorn main:app --host 0.0.0.0 --port 8006 &"
+args = "cd child_assistance_service && python -m uvicorn main:app --host 0.0.0.0 --port 8006 &"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd moving_service && PYTHONPATH=/home/runner/workspace uvicorn main:app --host 0.0.0.0 --port 8007 &"
+args = "cd moving_service && python -m uvicorn main:app --host 0.0.0.0 --port 8007 &"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd cleaning_service && PYTHONPATH=/home/runner/workspace uvicorn main:app --host 0.0.0.0 --port 8008 &"
+args = "cd cleaning_service && python -m uvicorn main:app --host 0.0.0.0 --port 8008 &"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd gateway && PYTHONPATH=/home/runner/workspace uvicorn main:app --host 0.0.0.0 --port 5000"
+args = "cd gateway && python -m uvicorn main:app --host 0.0.0.0 --port 5000"
 
 [[ports]]
 localPort = 5000

@@ -5,7 +5,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from shared.database_utils import setup_database
-from .config import SERVICE_NAME
+from config import SERVICE_NAME
 
 # Set up database connection
 engine, SessionLocal, Base = setup_database(SERVICE_NAME)

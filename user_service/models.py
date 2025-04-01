@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Enum, DateTime, func
-from .database import Base
+from user_service.database import Base
 import enum
 
 class UserRole(str, enum.Enum):

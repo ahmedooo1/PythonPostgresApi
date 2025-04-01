@@ -1,0 +1,72 @@
+
+ *  Executing task: docker compose -f 'docker-compose.yml' up -d --build 
+
+time="2025-04-01T04:01:08+02:00" level=warning msg="C:\\Users\\aa545\\Downloads\\PythonPostgresApi (1)\\PythonPostgresApi\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+[+] Building 5.9s (11/11) FINISHED                                                                            docker:desktop-linux
+ => [user_service internal] load build definition from Dockerfile                                                             0.0s
+ => => transferring dockerfile: 301B                                                                                          0.0s 
+ => [user_service internal] load metadata for docker.io/library/python:3.11-slim                                              1.3s 
+ => [user_service auth] library/python:pull token for registry-1.docker.io                                                    0.0s
+ => [user_service internal] load .dockerignore                                                                                0.0s
+ => => transferring context: 2B                                                                                               0.0s 
+ => [user_service 1/6] FROM docker.io/library/python:3.11-slim@sha256:7029b00486ac40bed03e36775b864d3f3d39dcbdf19cd45e6a52d5  1.1s 
+ => => resolve docker.io/library/python:3.11-slim@sha256:7029b00486ac40bed03e36775b864d3f3d39dcbdf19cd45e6a52d541e6c178f0     0.0s 
+ => => sha256:9eab895eb84c23106b53e9b3eaa76d790aa11ad723bc8d8e429785e790e5630d 249B / 249B                                    0.1s 
+ => => sha256:b4a6013a75d147904664f2f911837e64b9e25586c4085e3fdbe176719c7f5687 16.20MB / 16.20MB                              0.6s 
+ => => sha256:245f048c9f8a2432538751286248ab017d49f67a6bc8b70db1a05a20c562ec6f 3.51MB / 3.51MB                                0.6s 
+ => => extracting sha256:245f048c9f8a2432538751286248ab017d49f67a6bc8b70db1a05a20c562ec6f                                     0.1s
+ => => extracting sha256:b4a6013a75d147904664f2f911837e64b9e25586c4085e3fdbe176719c7f5687                                     0.3s
+ => => extracting sha256:9eab895eb84c23106b53e9b3eaa76d790aa11ad723bc8d8e429785e790e5630d                                     0.0s 
+ => [user_service internal] load build context                                                                                0.0s 
+ => => transferring context: 14.29kB                                                                                          0.0s 
+ => [user_service 2/6] WORKDIR /app                                                                                           0.1s 
+ => [user_service 3/6] COPY ./user_service ./user_service                                                                     0.0s 
+ => [user_service 4/6] COPY ./shared ./shared                                                                                 0.0s 
+ => [user_service 5/6] COPY pyproject.toml .                                                                                  0.0s 
+ => ERROR [user_service 6/6] RUN pip install --no-cache-dir -e .                                                              3.3s 
+------
+ > [user_service 6/6] RUN pip install --no-cache-dir -e .:
+1.302 Obtaining file:///app
+1.304   Installing build dependencies: started
+2.840   Installing build dependencies: finished with status 'done'
+2.840   Checking if build backend supports build_editable: started
+2.962   Checking if build backend supports build_editable: finished with status 'done'
+2.963   Getting requirements to build editable: started
+3.125   Getting requirements to build editable: finished with status 'error'
+3.128   error: subprocess-exited-with-error
+3.128
+3.128   × Getting requirements to build editable did not run successfully.
+3.128   │ exit code: 1
+3.128   ╰─> [14 lines of output]
+3.128       error: Multiple top-level packages discovered in a flat-layout: ['shared', 'user_service'].
+3.128
+3.128       To avoid accidental inclusion of unwanted files or directories,
+3.128       setuptools will not proceed with this build.
+3.128
+3.128       If you are trying to create a single distribution with multiple packages
+3.128       on purpose, you should not rely on automatic discovery.
+3.128       Instead, consider the following options:
+3.128
+3.128       1. set up custom discovery (`find` directive with `include` or `exclude`)
+3.128       2. use a `src-layout`
+3.128       3. explicitly set `py_modules` or `packages` with a list of names
+3.128
+3.128       To find more information, look for "package discovery" on setuptools docs.
+3.128       [end of output]
+3.128
+3.128   note: This error originates from a subprocess, and is likely not a problem with pip.
+3.129 error: subprocess-exited-with-error
+3.129
+3.129 × Getting requirements to build editable did not run successfully.
+3.129 │ exit code: 1
+3.129 ╰─> See above for output.
+3.129
+3.129 note: This error originates from a subprocess, and is likely not a problem with pip.
+3.228
+3.228 [notice] A new release of pip is available: 24.0 -> 25.0.1
+3.228 [notice] To update, run: pip install --upgrade pip
+------
+failed to solve: process "/bin/sh -c pip install --no-cache-dir -e ." did not complete successfully: exit code: 1
+
+ *  The terminal process "C:\Program Files\PowerShell\7\pwsh.exe -Command docker compose -f 'docker-compose.yml' up -d --build" terminated with exit code: 1. 
+ *  Terminal will be reused by tasks, press any key to close it. 

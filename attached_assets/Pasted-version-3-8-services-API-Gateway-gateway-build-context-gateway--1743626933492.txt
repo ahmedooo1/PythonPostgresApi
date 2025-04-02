@@ -1,0 +1,244 @@
+version: '3.8'
+
+services:
+  # API Gateway
+  gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - GATEWAY_SERVICE_HOST=0.0.0.0
+      - GATEWAY_SERVICE_PORT=5000
+      - USER_SERVICE_URL=http://user_service:8001
+      - ORDER_SERVICE_URL=http://order_service:8002
+      - PAYMENT_SERVICE_URL=http://payment_service:8003
+      - NOTIFICATION_SERVICE_URL=http://notification_service:8004
+      - PROVIDER_SERVICE_URL=http://provider_service:8005
+      - REPAIR_SERVICE_URL=http://repair_service:8006
+      - CHILD_ASSISTANCE_SERVICE_URL=http://child_assistance_service:8007
+      - MOVING_SERVICE_URL=http://moving_service:8008
+      - CLEANING_SERVICE_URL=http://cleaning_service:8009
+    depends_on:
+      - postgres
+      - user_service
+      - order_service
+      - payment_service
+      - notification_service
+      - provider_service
+      - repair_service
+      - child_assistance_service
+      - moving_service
+      - cleaning_service
+    networks:
+      - app-network
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${PGUSER}
+      - POSTGRES_PASSWORD=${PGPASSWORD}
+      - POSTGRES_DB=${PGDATABASE}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # User Service
+  user_service:
+    build:
+      context: .
+      dockerfile: user_service/Dockerfile
+    environment:
+      - USER_SERVICE_HOST=0.0.0.0
+      - USER_SERVICE_PORT=8000
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - PGDATABASE=${PGDATABASE}
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+
+  # Order Service
+  order_service:
+    build:
+      context: .
+      dockerfile: order_service/Dockerfile
+    environment:
+      - ORDER_SERVICE_HOST=0.0.0.0
+      - ORDER_SERVICE_PORT=8000
+      - USER_SERVICE_URL=http://user_service:8000
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - PGDATABASE=${PGDATABASE}
+    depends_on:
+      - postgres
+      - user_service
+    networks:
+      - app-network
+
+  # Payment Service
+  payment_service:
+    build:
+      context: .
+      dockerfile: payment_service/Dockerfile
+    environment:
+      - PAYMENT_SERVICE_HOST=0.0.0.0
+      - PAYMENT_SERVICE_PORT=8000
+      - USER_SERVICE_URL=http://user_service:8000
+      - ORDER_SERVICE_URL=http://order_service:8000
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - PGDATABASE=${PGDATABASE}
+    depends_on:
+      - postgres
+      - user_service
+      - order_service
+    networks:
+      - app-network
+
+  # Notification Service
+  notification_service:
+    build:
+      context: .
+      dockerfile: notification_service/Dockerfile
+    environment:
+      - NOTIFICATION_SERVICE_HOST=0.0.0.0
+      - NOTIFICATION_SERVICE_PORT=8000
+      - USER_SERVICE_URL=http://user_service:8000
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - PGDATABASE=${PGDATABASE}
+    depends_on:
+      - postgres
+      - user_service
+    networks:
+      - app-network
+
+  # Provider Service
+  provider_service:
+    build:
+      context: .
+      dockerfile: provider_service/Dockerfile
+    environment:
+      - PROVIDER_SERVICE_HOST=0.0.0.0
+      - PROVIDER_SERVICE_PORT=8000
+      - USER_SERVICE_URL=http://user_service:8000
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - PGDATABASE=${PGDATABASE}
+    depends_on:
+      - postgres
+      - user_service
+    networks:
+      - app-network
+
+  # Repair Service
+  repair_service:
+    build:
+      context: .
+      dockerfile: repair_service/Dockerfile
+    environment:
+      - REPAIR_SERVICE_HOST=0.0.0.0
+      - REPAIR_SERVICE_PORT=8000
+      - USER_SERVICE_URL=http://user_service:8000
+      - ORDER_SERVICE_URL=http://order_service:8000
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - PGDATABASE=${PGDATABASE}
+    depends_on:
+      - postgres
+      - user_service
+      - order_service
+    networks:
+      - app-network
+
+  # Child Assistance Service
+  child_assistance_service:
+    build:
+      context: .
+      dockerfile: child_assistance_service/Dockerfile
+    environment:
+      - CHILD_ASSISTANCE_SERVICE_HOST=0.0.0.0
+      - CHILD_ASSISTANCE_SERVICE_PORT=8000
+      - USER_SERVICE_URL=http://user_service:8000
+      - ORDER_SERVICE_URL=http://order_service:8000
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - PGDATABASE=${PGDATABASE}
+    depends_on:
+      - postgres
+      - user_service
+      - order_service
+    networks:
+      - app-network
+
+  # Moving Service
+  moving_service:
+    build:
+      context: .
+      dockerfile: moving_service/Dockerfile
+    environment:
+      - MOVING_SERVICE_HOST=0.0.0.0
+      - MOVING_SERVICE_PORT=8000
+      - USER_SERVICE_URL=http://user_service:8000
+      - ORDER_SERVICE_URL=http://order_service:8000
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - PGDATABASE=${PGDATABASE}
+    depends_on:
+      - postgres
+      - user_service
+      - order_service
+    networks:
+      - app-network
+
+  # Cleaning Service
+  cleaning_service:
+    build:
+      context: .
+      dockerfile: cleaning_service/Dockerfile
+    environment:
+      - CLEANING_SERVICE_HOST=0.0.0.0
+      - CLEANING_SERVICE_PORT=8000
+      - USER_SERVICE_URL=http://user_service:8000
+      - ORDER_SERVICE_URL=http://order_service:8000
+      - PGHOST=postgres
+      - PGPORT=5432
+      - PGUSER=${PGUSER}
+      - PGPASSWORD=${PGPASSWORD}
+      - PGDATABASE=${PGDATABASE}
+    depends_on:
+      - postgres
+      - user_service
+      - order_service
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
